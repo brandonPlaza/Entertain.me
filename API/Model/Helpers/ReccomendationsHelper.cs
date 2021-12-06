@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace API.Model.Helpers
 {
-    public class ReccomendationsHelper
+    public static class ReccomendationsHelper
     {
-        
+       
     }
 }
