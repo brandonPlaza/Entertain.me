@@ -11,6 +11,7 @@ namespace API.Model.Persistence
 {
     public class DataContext : IdentityDbContext<User>
     {
+        public DbSet<User> Users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=MyDatabase.db");
