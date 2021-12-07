@@ -14,7 +14,6 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMediaByTitle([FromQuery] string mediaTitle)
         {
-            //TODO: Implement Realistic Implementation
             var response = ReccomendationsHelper.GetAllMediaByTitle(mediaTitle);
             return Ok(response);
         }
