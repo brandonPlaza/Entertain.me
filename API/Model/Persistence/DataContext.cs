@@ -19,6 +19,7 @@ namespace API.Model.Persistence
         {
             builder.Entity<UserGenre>()
                 .HasKey(g => new { g.UserId, g.GenreId });
+            base.OnModelCreating(builder);
         }
     }
 }
