@@ -34,7 +34,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("api/[controller]/[action]")]
+        [Route("[action]")]
         public async Task FavouriteMovie([FromQuery] int movieId)
         {
             (await _userManager.GetUserAsync(HttpContext.User)).Favourites
