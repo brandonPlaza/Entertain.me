@@ -21,5 +21,7 @@ namespace API.Model.Persistence
                 .HasKey(g => new { g.UserId, g.GenreId });
             base.OnModelCreating(builder);
         }
+        
+        public DbSet<Media> Media { get; set; }
     }
 }
