@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace API.Model.Entities
 {
-    public class AdminUser
+    public class Creator
     {
-        // user with all privileges accessible 
+        // name
         public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }
