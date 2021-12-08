@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using API.Model.Entities;
+using API.Model.Helpers;
 
 namespace API
 {
@@ -36,6 +37,8 @@ namespace API
             services.AddControllers();
 
             services.AddEntityFrameworkSqlite().AddDbContext<DataContext>();
+
+            services.AddSingleton(new MovieApiHelper("6bfc5edb70cf2f059fcfc2b4517f89dd"));
 
             services.AddSwaggerGen(c =>
             {
