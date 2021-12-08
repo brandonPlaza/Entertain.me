@@ -6,6 +6,7 @@ using API.Model.Entities;
 using API.Model.Helpers;
 using API.Model.Persistence;
 using API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,8 @@ namespace API.Controllers
             this._tokenService = tokenService;
             this._context = context;
         }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetMediaByTitle([FromQuery] string mediaTitle)
         {
