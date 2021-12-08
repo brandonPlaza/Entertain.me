@@ -12,13 +12,13 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RecommendationsController : ControllerBase
+    public class SearchController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly TokenService _tokenService;
 
-        public RecommendationsController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
+        public SearchController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
@@ -27,7 +27,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMediaByTitle([FromQuery] string mediaTitle)
         {
-            var response = ReccomendationsHelper.GetAllMediaByTitle(mediaTitle);
+            var response = RecommendationsHelper.GetAllMediaByTitle(mediaTitle);
             return Ok(response);
         }
     }

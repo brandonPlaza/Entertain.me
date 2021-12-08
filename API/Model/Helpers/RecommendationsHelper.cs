@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace API.Model.Helpers
 {
-    public static class ReccomendationsHelper
+    public static class RecommendationsHelper
     {
        public static IEnumerable<string> GetAllMediaByTitle(string mediaTitle){
            string apiKey = "6bfc5edb70cf2f059fcfc2b4517f89dd";
@@ -21,5 +21,7 @@ namespace API.Model.Helpers
                yield return responseString.Replace("\"", string.Empty);
            }
        }
+
+       
     }
 }
