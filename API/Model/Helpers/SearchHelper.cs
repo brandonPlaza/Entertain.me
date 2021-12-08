@@ -35,7 +35,7 @@ namespace API.Model.Helpers
            }
        }
 
-       public async Task<List<Media>> SearchForMovies(DataContext db, string title)
+       public async Task<List<Media>> SearchForMedia(DataContext db, string title)
         {
             var data = await _client.GetAsync($"https://api.themoviedb.org/3/search/multi?api_key={_key}&query=" +
                              UrlEncoder.Default.Encode(title));
