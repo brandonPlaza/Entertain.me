@@ -9,12 +9,17 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class RecommendationController : ControllerBase
     {
-        public MovieApiHelper MovieHelper { get; set; }
+        private MovieApiHelper _movieHelper;
+
+        public RecommendationController(MovieApiHelper movieHelper)
+        {
+            _movieHelper = movieHelper;
+        }
 
         [HttpGet]
         public async Task<IActionResult> RecommendMovies([FromQuery] List<string> movieIDs)
         {
-            var results = await MovieHelper.RecommendMovies(movieIDs);
+            var results = await _movieHelper.RecommendMovies(movieIDs);
             return Ok(results);
         }
     }
