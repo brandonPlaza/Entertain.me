@@ -54,7 +54,7 @@ namespace API
 
             services.AddScoped<TokenService>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SECRET KEY"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my super secret key"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>
             {

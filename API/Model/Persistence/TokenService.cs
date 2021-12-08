@@ -20,7 +20,7 @@ namespace API.Model.Persistence
                     new Claim(ClaimTypes.Email, user.Email),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SECRET KEY"));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my super secret key"));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
