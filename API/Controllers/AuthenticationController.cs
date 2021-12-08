@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Model.DTOs;
 using API.Model.Entities;
-using API.Models;
+using API.Model.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

@@ -52,6 +52,8 @@ namespace API
             .AddEntityFrameworkStores<DataContext>()
             .AddSignInManager<SignInManager<User>>();
 
+            services.AddScoped<TokenService>();
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SECRET KEY"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>

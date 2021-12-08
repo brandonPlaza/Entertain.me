@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using API.Model.Entities;
 using API.Model.Helpers;
 using API.Model.Persistence;
-using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

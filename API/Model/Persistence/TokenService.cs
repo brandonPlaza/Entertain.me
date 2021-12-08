@@ -4,12 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using API.Model.Entities;
 
-namespace API.Models
+namespace API.Model.Persistence
 {
     public class TokenService
     {
