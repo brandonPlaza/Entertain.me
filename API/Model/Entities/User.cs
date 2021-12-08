@@ -8,6 +8,6 @@ namespace API.Model.Entities
 {
     public class User : IdentityUser
     {
-        
+        public ICollection<Media> Favourites { get; set; } 
     }
 }

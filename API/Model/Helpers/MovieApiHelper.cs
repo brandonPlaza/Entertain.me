@@ -33,14 +33,14 @@ namespace API.Model.Helpers
             _key = key;
         }
 
-        /// Recommend new movies based on the existing list of favourites.
-        public async Task<List<Movie>> RecommendMovies(List<Movie> favourites)
+        /// Recommend new movies based on the existing list of favourite movie IDs.
+        public async Task<List<Movie>> RecommendMovies(List<string> favouriteIDs)
         {
             var allRecommendations = new List<Movie>();
 
-            foreach (var favourite in favourites)
+            foreach (var favourite in favouriteIDs)
             {
-                var data = await _client.GetAsync($"https://api.themoviedb.org/3/movie/{favourite.Id}/recommendations?api_key={_key}");
+                var data = await _client.GetAsync($"https://api.themoviedb.org/3/movie/{favourite}/recommendations?api_key={_key}");
                 if (!data.IsSuccessStatusCode)
                     throw new HttpRequestException("API Failure: " + await data.Content.ReadAsStringAsync());
                 
