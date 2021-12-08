@@ -59,9 +59,7 @@ namespace API.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(new UserDTO{
-                    Token = _tokenService.CreateToken(user)
-                });
+                return Ok();
             }
 
             return Unauthorized("Password is not correct");

@@ -7,6 +7,6 @@ namespace API.Model.Entities
 {
     public class Media
     {
-        
+        public Guid Id { get; set; }
     }
 }
