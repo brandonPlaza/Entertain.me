@@ -2,7 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Model.Entities;
+using API.Model.Persistence;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -10,33 +15,50 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
+
+        private DataContext _context;
+        private readonly UserManager<User> _userManager;
+        
+        // data injection
+        public AdminController(DataContext context){
+            _context = context;
+        }
+
         // Manage Media - [Admin]
         [HttpGet]
-        public async Task<IActionResult> GetAllMedia(){
-            return Ok();
+        public IEnumerable<User> GetAllMedia(){
+            return _context.Users;
         }
 
         // returns one entry
-        [HttpGet("/getEntry")]
-        public async Task<IActionResult> GetEntry(){
+        [Authorize]
+        [HttpGet("/getEntry/{id}")]
+        public async Task<IActionResult> GetEntryById(string id){
+
+            
+            var userId = new Guid(id);
+            var user = await _userManager.FindByIdAsync(id);
             return Ok();
         }
 
         // add media entries with a Creator and Genre 
-        [HttpPost("/add")]
+        [HttpPost("/api/admin/add")]
         public async Task<IActionResult> AddMedia(){
             return Ok();
         }
 
         // edit any and all attributes 
-        [HttpPost("/edit")]
+        [HttpPost("/api/admin/edit")]
         public async Task<IActionResult> EditMedia(){
             return Ok();
         }
 
         // delete
-        [HttpDelete("/deleteAll")]
+        [HttpDelete("/api/admin/deleteAll")]
         public async Task<IActionResult> DeleteAllMedia(){
+            
+
+
             return Ok();
         }
 
