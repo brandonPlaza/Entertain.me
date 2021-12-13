@@ -16,20 +16,7 @@ namespace API.Model.Helpers
     {
         private static readonly string _key = "6bfc5edb70cf2f059fcfc2b4517f89dd";
         private static readonly HttpClient _client = new HttpClient();
-
-    //    public static IEnumerable<string> GetAllMediaByTitle(string mediaTitle){
-    //        var client = new RestClient("https://api.themoviedb.org/3/search/multi");
-    //        client.Timeout = -1;
-    //        var request = new RestRequest(Method.GET);
-    //        request.AddParameter("api_key",_key);
-    //        request.AddParameter("query",mediaTitle);
-    //        IRestResponse response = client.Execute(request);
-    //        string[] rawResponse = response.Content.Split(new string[] {","}, StringSplitOptions.RemoveEmptyEntries);
-    //        foreach(string responseString in rawResponse){
-    //            yield return responseString.Replace("\"", string.Empty);
-    //        }
-    //    }
-
+        
        public static async Task<List<Media>> SearchForMedia(DataContext db, string title)
         {
             var data = await _client.GetAsync($"https://api.themoviedb.org/3/search/multi?api_key={_key}&query=" +
