@@ -12,7 +12,7 @@ namespace API.Model.Persistence
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=MyDatabase.db");
+            optionsBuilder.UseSqlite("Filename=data.db");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
