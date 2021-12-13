@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Model.DTOs;
 using API.Model.Entities;
 using API.Model.Persistence;
 using Microsoft.AspNetCore.Authorization;
@@ -19,56 +20,93 @@ namespace API.Controllers
         private DataContext _context;
         private readonly UserManager<User> _userManager;
         
-        // data injection
         public AdminController(DataContext context){
             _context = context;
         }
 
-        // Manage Media - [Admin]
+        // [Authorize]
         [HttpGet]
         public IEnumerable<User> GetAllMedia(){
             return _context.Users;
         }
 
-        // returns one entry
         [Authorize]
-        [HttpGet("/getEntry/{id}")]
-        public async Task<IActionResult> GetEntryById(string id){
+        [HttpGet("/{id}")]
+        public async Task<IActionResult> GetEntryById(int id){
 
+            // var mediaId = new Guid(id);
+            var mediaItem = await _context.Media.FindAsync(id);
+            return Ok(mediaItem);
+        }
+
+        [Authorize]
+        [HttpPost("/addEntry")]
+        public async Task<IActionResult> AddMedia(Media media){
+
+            if (media == null)
+                return BadRequest();
+
+            // add media entries 
+            await _context.Media.AddAsync(media);
+            await _context.SaveChangesAsync();
             
-            var userId = new Guid(id);
-            var user = await _userManager.FindByIdAsync(id);
             return Ok();
         }
 
-        // add media entries with a Creator and Genre 
-        [HttpPost("/api/admin/add")]
-        public async Task<IActionResult> AddMedia(){
+
+        // edit a media item (just the media item, without the genre table)
+        [Authorize]
+        [HttpPost("/edit/{id}")]
+        public async Task<IActionResult> EditMedia(int id,[FromBody] MediaDTO mediaDTO){
+
+            // ??? add a new item to Media table that has mediaDTO's fields ?
+            // var result = await _context.Media.AddAsync(new Media
+            // {
+            //     Adult = mediaDTO.Adult,
+            //     MediaType = mediaDTO.MediaType,
+            //     Language = mediaDTO.Language,
+            //     Title = mediaDTO.Title,
+            //     Overview = mediaDTO.Overview
+            // });        
+
+            // find the item and replace the fields with mediaDTO's fields 
+            foreach (var item in _context.Media)
+            {
+                if (item.Id == id)
+                {
+                    item.Adult = mediaDTO.Adult;
+                    item.MediaType = mediaDTO.MediaType;
+                    item.Language = mediaDTO.Language;
+                    item.Title = mediaDTO.Title;
+                    item.Overview = mediaDTO.Overview;
+                    
+                }
+            }
             return Ok();
         }
 
-        // edit any and all attributes 
-        [HttpPost("/api/admin/edit")]
-        public async Task<IActionResult> EditMedia(){
-            return Ok();
-        }
-
-        // delete
-        [HttpDelete("/api/admin/deleteAll")]
+        [HttpDelete("/deleteAll")]
         public async Task<IActionResult> DeleteAllMedia(){
             
 
-
-            return Ok();
+            foreach (var item in _context.Media)
+            {
+                _context.Media.Remove(item);
+            }
+            return Ok("It has been done...");
         }
 
-        // delete a specific entry
         [HttpDelete]
-        public async Task<IActionResult> DeleteEntry(){
+        public async Task<IActionResult> DeleteEntry(int id){
+
+            foreach (var item in _context.Media)
+            {
+                if (item.Id == id)
+                {
+                    _context.Media.Remove(item);
+                }
+            }
             return Ok();
         }
-
-        // Add Media / Creator / Genre - add in add method
-
     }
 }
