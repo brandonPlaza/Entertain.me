@@ -1,14 +1,30 @@
-const API_URL = "http://127.0.0.1:5000/api";
+// Entertain.me Common JS Utilities
 
-const EntertainMe = (() => {
 
+// Simple shorthand for document.querySelector(...): $_`#query`
+const $_ = (a) => document.querySelector(a);
+
+
+// API Helper: Checks login status, wraps requests, etc.
+// Exports:
+//      LoggedIn            bool                        Indicates log-in status
+//      ExpectLoggedIn      void(url)                   Check if the user is logged in, else redirect to URL.
+//      ExpectLoggedOut     void(url)                   Check if the user is logged out, else redirect to URL.
+//      Get                 Promise<object>(url)        Make a GET request to the URL and parse and return JSON data.
+//      Post                Promise<object>(url)        Make a POST request to the URL and parse and return JSON data.
+const API = (() => {
+    const API_URL = "http://127.0.0.1:5000/api";
+    
+    // Check authorization status
     const AuthToken = localStorage.getItem("auth_token");
     const LoggedIn = !!AuthToken;
     
+    // Inject bearer header into a request.
     const AddAuthToHeaders = (headers) =>
         LoggedIn ? { Authorization: `Bearer ${AuthToken}`, ...headers } : headers;
     
-    const Get = (path, body) => {
+    // Generic HTTP GET request, parsing JSON response.
+    const Get = (path) => {
         return fetch(`${API_URL}/${path}`, {
             headers: AddAuthToHeaders({})
         })
@@ -16,6 +32,7 @@ const EntertainMe = (() => {
             .catch(err => console.error(err));
     };
     
+    // Generic HTTP POST request, parsing JSON response.
     const Post = (path, body) => {
         return fetch(`${API_URL}/${path}`, {
             method: 'POST',
@@ -28,13 +45,17 @@ const EntertainMe = (() => {
             .catch(err => console.error(err));
     };
     
+    // Helper: Invoke from JS body to indicate that this page expects the user to be logged in and should redirect
+    // elsewhere otherwise.
+    const ExpectLoggedIn = (fallback) => {
+        if (!LoggedIn) window.location.href = fallback;
+    };
     
-    Post('Authentication/register', {
-        userName: 'ethan2',
-        email: 'ethan+foo@tague.me',
-        password: 'TestPa12@ssword'
-    }).then(res => console.log(res));
+    // Helper: Invoke from JS body to indicate that this page expects the user to be logged out and should redirect
+    // elsewhere otherwise.
+    const ExpectLoggedOut = (fallback) => {
+        if (LoggedIn) window.location.href = fallback;
+    }
     
-    return { Get, Post, LoggedIn };
-    
+    return { Get, Post, LoggedIn, ExpectLoggedIn, ExpectLoggedOut };
 })();
