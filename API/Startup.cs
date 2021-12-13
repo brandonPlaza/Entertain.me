@@ -34,6 +34,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors();
+
             services.AddControllers();
 
             services.AddEntityFrameworkSqlite().AddDbContext<DataContext>();
@@ -78,6 +80,8 @@ namespace API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
+
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 
