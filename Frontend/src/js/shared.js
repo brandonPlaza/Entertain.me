@@ -56,6 +56,6 @@ const API = (() => {
     const ExpectLoggedOut = (fallback) => {
         if (LoggedIn) window.location.href = fallback;
     }
-    
+
     return { Get, Post, LoggedIn, ExpectLoggedIn, ExpectLoggedOut };
 })();
