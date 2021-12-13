@@ -14,5 +14,14 @@ namespace API.Model.Persistence
         {
             optionsBuilder.UseSqlite("Filename=MyDatabase.db");
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<UserGenre>()
+                .HasKey(g => new { g.UserId, g.GenreId });
+            base.OnModelCreating(builder);
+        }
+        
+        public DbSet<Media> Media { get; set; }
     }
 }

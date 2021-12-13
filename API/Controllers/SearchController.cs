@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Model.Entities;
 using API.Model.Helpers;
-using API.Models;
+using API.Model.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,17 +18,21 @@ namespace API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly TokenService _tokenService;
+        private readonly DataContext _context;
 
-        public SearchController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService)
+        public SearchController(UserManager<User> userManager, SignInManager<User> signInManager, TokenService tokenService, DataContext context)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._tokenService = tokenService;
+            this._context = context;
         }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetMediaByTitle([FromQuery] string mediaTitle)
         {
-            var response = RecommendationsHelper.GetAllMediaByTitle(mediaTitle);
+            var response = SearchHelper.SearchForMedia(_context,mediaTitle);
             return Ok(response);
         }
     }

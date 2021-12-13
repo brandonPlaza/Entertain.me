@@ -5,23 +5,11 @@ using System.Net.Http.Json;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using API.Model.Entities;
+using API.Model.Persistence;
 
 namespace API.Model.Helpers
 {
-    /// <summary>
-    /// Represents a movie from the API.
-    /// </summary>
-    public class Movie
-    {
-        [JsonPropertyName("adult")] public bool Adult { get; set; }
-        [JsonPropertyName("genre_ids")] public List<int> GenreIds { get; set; } = new List<int>();
-        [JsonPropertyName("id")] public int Id { get; set; }
-        [JsonPropertyName("media_type")] public string MediaType { get; set; } = "";
-        [JsonPropertyName("original_language")] public string Language { get; set; } = "";
-        [JsonPropertyName("title")] public string Title { get; set; } = "";
-        [JsonPropertyName("overview")] public string Overview { get; set; } = "";
-    }
-    
     /// Movie recommendation API helper
     public class MovieApiHelper
     {
@@ -34,9 +22,9 @@ namespace API.Model.Helpers
         }
 
         /// Recommend new movies based on the existing list of favourite movie IDs.
-        public async Task<List<Movie>> RecommendMovies(List<string> favouriteIDs)
+        public async Task<List<Media>> RecommendMovies(DataContext db, List<string> favouriteIDs)
         {
-            var allRecommendations = new List<Movie>();
+            var allRecommendations = new List<Media>();
 
             foreach (var favourite in favouriteIDs)
             {
@@ -52,27 +40,14 @@ namespace API.Model.Helpers
                 allRecommendations.AddRange(result!.Results);
             }
 
-            return allRecommendations.GroupBy(x => x.Id).Select(x => x.First()).ToList();
-        }
-
-        /// Search for movies based on a title.
-        public async Task<List<Movie>> SearchForMovies(string title)
-        {
-            var data = await _client.GetAsync($"https://api.themoviedb.org/3/search/multi?api_key={_key}&query=" +
-                             UrlEncoder.Default.Encode(title));
-            if (!data.IsSuccessStatusCode)
-                throw new HttpRequestException("API Failure: " + await data.Content.ReadAsStringAsync());
-
-            var result = await data.Content.ReadFromJsonAsync<MovieSearchResults>();
-            if (result == null)
-                throw new HttpRequestException("Failed to parse API result");
-
-            return result!.Results;
+            var unique = allRecommendations.GroupBy(x => x.Id).Select(x => x.First()).ToList();
+            await db.Media.AddRangeAsync(unique);
+            return unique;
         }
         
         private class MovieSearchResults
         {
-            [JsonPropertyName("results")] public List<Movie> Results { get; set; }
+            [JsonPropertyName("results")] public List<Media> Results { get; set; }
         }
     }
 }

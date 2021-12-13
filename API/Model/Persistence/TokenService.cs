@@ -4,12 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-
 using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using API.Model.Entities;
 
-namespace API.Models
+namespace API.Model.Persistence
 {
     public class TokenService
     {
@@ -21,7 +20,7 @@ namespace API.Models
                     new Claim(ClaimTypes.Email, user.Email),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my super duper key"));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is my super secret key"));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {

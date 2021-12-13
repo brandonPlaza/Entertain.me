@@ -3,14 +3,16 @@ using System;
 using API.Model.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211208220020_AddWatchlist")]
+    partial class AddWatchlist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,23 +20,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Model.Entities.Media", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Adult")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Overview")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")

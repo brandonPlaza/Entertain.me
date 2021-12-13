@@ -3,14 +3,16 @@ using System;
 using API.Model.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211208213855_AddRelationship")]
+    partial class AddRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,36 +20,16 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Model.Entities.Media", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Adult")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Overview")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Media");
                 });
@@ -114,27 +96,6 @@ namespace API.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("API.Model.Entities.UserGenre", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("GenreId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("GenreName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UserId", "GenreId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("UserGenre");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -270,19 +231,6 @@ namespace API.Migrations
                     b.HasOne("API.Model.Entities.User", null)
                         .WithMany("Favourites")
                         .HasForeignKey("UserId");
-
-                    b.HasOne("API.Model.Entities.User", null)
-                        .WithMany("WatchList")
-                        .HasForeignKey("UserId1");
-                });
-
-            modelBuilder.Entity("API.Model.Entities.UserGenre", b =>
-                {
-                    b.HasOne("API.Model.Entities.User", "User")
-                        .WithMany("FavouriteGenres")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -338,11 +286,7 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Model.Entities.User", b =>
                 {
-                    b.Navigation("FavouriteGenres");
-
                     b.Navigation("Favourites");
-
-                    b.Navigation("WatchList");
                 });
 #pragma warning restore 612, 618
         }

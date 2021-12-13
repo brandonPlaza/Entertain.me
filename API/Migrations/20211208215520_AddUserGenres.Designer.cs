@@ -3,14 +3,16 @@ using System;
 using API.Model.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211208215520_AddUserGenres")]
+    partial class AddUserGenres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,36 +20,16 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Model.Entities.Media", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Adult")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Overview")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Media");
                 });
@@ -270,10 +252,6 @@ namespace API.Migrations
                     b.HasOne("API.Model.Entities.User", null)
                         .WithMany("Favourites")
                         .HasForeignKey("UserId");
-
-                    b.HasOne("API.Model.Entities.User", null)
-                        .WithMany("WatchList")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("API.Model.Entities.UserGenre", b =>
@@ -341,8 +319,6 @@ namespace API.Migrations
                     b.Navigation("FavouriteGenres");
 
                     b.Navigation("Favourites");
-
-                    b.Navigation("WatchList");
                 });
 #pragma warning restore 612, 618
         }
