@@ -3,3 +3,36 @@ img {
     height: auto;
     width: auto\9; /* ie8 */
 }
+
+.box{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.titleSearch{
+    float: left;
+    width: 100%;
+    font-size: 16px;
+    flex: 1;
+}
+
+.searchContainer{
+    padding: 0px 150px 50px 150px;
+    background-color: rgb(33, 33, 31);
+}
+
+.searchBackground{
+    background-image: url("../src/images/searchBackground.jpeg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+html,body{
+    margin: 0;
+    height: 100%;
+}
