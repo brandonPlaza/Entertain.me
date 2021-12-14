@@ -36,13 +36,40 @@ function clearPreviousCards(){
 function selectMedia(element){
     console.log(element.srcElement.innerHTML)
     if(previouslyEnjoyedMedia < 2){
-        previouslyEnjoyedMedia.push(element.srcElement.innerHTML)
+        var submitToDatabaseBtnHolder = document.getElementById("btn-holder")
+        submitToDatabaseBtnHolder.classList.add("box")
+        submitToDatabaseBtnHolder.classList.add("sendPreferencesBtn")
+
+        var submitToDatabaseBtn = document.createElement("button")
+        submitToDatabaseBtn.classList.add('button')
+        submitToDatabaseBtn.classList.add('box')
+        submitToDatabaseBtn.innerHTML = "Get your recommendations!"
+        submitToDatabaseBtn.addEventListener("click",sendPreferencesToAPI)
+
+        submitToDatabaseBtnHolder.appendChild(submitToDatabaseBtn)
     }
 
     if(element.srcElement.style.backgroundColor === 'green'){
+        previouslyEnjoyedMedia.splice(previouslyEnjoyedMedia.indexOf(media => media === element.srcElement.innerHTML), 1)
+        console.log(previouslyEnjoyedMedia)
         element.srcElement.style.backgroundColor = 'white'
     }
     else{
+        previouslyEnjoyedMedia.push(element.srcElement.innerHTML)
+        console.log(previouslyEnjoyedMedia)
         element.srcElement.style.backgroundColor = 'green'
     }
+}
+
+function flipElementColor(element){
+    if(element.style.backgroundColor === 'green'){
+        element.style.backgroundColor = 'white'
+    }
+    else{
+        element.style.backgroundColor = 'green'
+    }
+}
+
+function sendPreferencesToAPI(){
+
 }

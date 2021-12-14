@@ -22,7 +22,9 @@ img {
     background-color: rgb(33, 33, 31);
 }
 
-
+.sendPreferencesBtn{
+    margin: 10px;
+}
 
 .searchBackground{
     background-image: url("../src/images/searchBackground.jpeg");
