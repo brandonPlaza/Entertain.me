@@ -32,7 +32,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMediaByTitle([FromQuery] string mediaTitle)
         {
-            var response = SearchHelper.SearchForMedia(_context,mediaTitle);
+            var response = await SearchHelper.SearchForMedia(_context,mediaTitle);
             return Ok(response);
         }
     }
