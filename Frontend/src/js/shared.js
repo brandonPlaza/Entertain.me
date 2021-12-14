@@ -25,8 +25,12 @@ const API = (() => {
     
     // Generic HTTP GET request, parsing JSON response.
     const Get = (path) => {
+        console.log("AATH: " + JSON.stringify(AddAuthToHeaders({})));
+
         return fetch(`${API_URL}/${path}`, {
-            headers: AddAuthToHeaders({})
+            method: 'GET',
+            headers: AddAuthToHeaders({}),
+            credentials: "include"
         })
             .then(response => response.json())
             .catch(err => console.error(err));
