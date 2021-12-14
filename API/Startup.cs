@@ -34,6 +34,10 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddAuthentication();
+            
+            services.AddAuthorization();
+
             services.AddCors();
 
             services.AddControllers();

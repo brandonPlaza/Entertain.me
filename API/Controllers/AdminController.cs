@@ -20,18 +20,19 @@ namespace API.Controllers
         private DataContext _context;
         private readonly UserManager<User> _userManager;
         
-        public AdminController(DataContext context){
+        public AdminController(DataContext context, UserManager<User> userManager){
             _context = context;
+            _userManager = userManager;
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpGet]
         public IEnumerable<User> GetAllMedia(){
             return _context.Users;
         }
 
         [Authorize]
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetEntryById(int id){
 
             // var mediaId = new Guid(id);
@@ -40,9 +41,8 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost("/addEntry")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddMedia(Media media){
-
             if (media == null)
                 return BadRequest();
 
@@ -50,24 +50,16 @@ namespace API.Controllers
             await _context.Media.AddAsync(media);
             await _context.SaveChangesAsync();
             
-            return Ok();
+            return Ok(media);
         }
 
 
         // edit a media item (just the media item, without the genre table)
         [Authorize]
-        [HttpPost("/edit/{id}")]
+        [HttpPost("edit/{id}")]
         public async Task<IActionResult> EditMedia(int id,[FromBody] MediaDTO mediaDTO){
 
-            // ??? add a new item to Media table that has mediaDTO's fields ?
-            // var result = await _context.Media.AddAsync(new Media
-            // {
-            //     Adult = mediaDTO.Adult,
-            //     MediaType = mediaDTO.MediaType,
-            //     Language = mediaDTO.Language,
-            //     Title = mediaDTO.Title,
-            //     Overview = mediaDTO.Overview
-            // });        
+            // ??? add a new item to Media table that has mediaDTO's fields ?        
 
             // find the item and replace the fields with mediaDTO's fields 
             foreach (var item in _context.Media)
@@ -79,13 +71,12 @@ namespace API.Controllers
                     item.Language = mediaDTO.Language;
                     item.Title = mediaDTO.Title;
                     item.Overview = mediaDTO.Overview;
-                    
                 }
             }
             return Ok();
         }
 
-        [HttpDelete("/deleteAll")]
+        [HttpDelete("deleteAll")]
         public async Task<IActionResult> DeleteAllMedia(){
             
 
