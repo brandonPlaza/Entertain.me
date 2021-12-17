@@ -45,10 +45,13 @@ namespace API.Controllers
             var newMedia = new List<Media>();
             var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             var userEntry = await _context.Users.Include(user => user.Favourites).SingleOrDefaultAsync(user => user.Id == authUser.Id);
+            
             foreach(int id in mediaIds){
                 var mediaObj = await SearchHelper.SearchForSpecificTitle(_context,id);
+                newMedia.Add(mediaObj);
                 userEntry.Favourites.Add(mediaObj);
             }
+            await _context.Favourites.AddRangeAsync(newMedia);
             await _context.SaveChangesAsync();
             return Ok();
         }

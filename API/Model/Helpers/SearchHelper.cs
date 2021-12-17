@@ -55,7 +55,7 @@ namespace API.Model.Helpers
         }
 
         private class SingleResult{
-            [JsonPropertyName("results")] public List<Media> Result { get; set; }
+            [JsonPropertyName("results")] public Media Result { get; set; }
         }
     }
 }

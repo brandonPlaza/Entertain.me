@@ -73,6 +73,6 @@ function selectMedia(element){
 
 function sendPreferencesToAPI(){
     API.Post(`search/addToFavourites`, previouslyEnjoyedMedia).then(results => {
-        //clearPreviousCards()
+        window.location.replace("http://127.0.0.1:5500/Frontend/MediaPicking/index.html")
     });
 }
