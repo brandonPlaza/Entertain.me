@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using API.Model.DTOs;
 using API.Model.Entities;
 using API.Model.Persistence;
@@ -43,6 +44,12 @@ namespace API.Controllers
         [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddMedia(Media media){
+
+            // get the user with the authenticated email
+            var user = await _userManager.Users.Include(x => x.WatchList).FirstOrDefaultAsync(x => x.NormalizedEmail.Equals(User.FindFirstValue(ClaimTypes.Email).ToUpper()));
+
+            // var user = await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email).ToString());
+
             if (media == null)
                 return BadRequest();
 

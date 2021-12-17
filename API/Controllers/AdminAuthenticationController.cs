@@ -29,29 +29,22 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterDTO registerDto)
         {
-            // make sure
-            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            
-            // check that the email ends in "@entertain.me"
-            if (registerDto.Email.Contains("@entertain.me"))
+            if(!registerDto.Email.Contains("@entertain.me")) return BadRequest("email not valid");
+            var result = await _userManager.CreateAsync(
+            new User
             {
-                // then add it
-                var result = await _userManager.CreateAsync(
-                new User
-                {
-                    Email = registerDto.Email,
-                    UserName = registerDto.UserName
-                },
-                    registerDto.Password
-                );
-
-                if (result.Succeeded)
-                {
-                   return Ok();
-                }
+                Email = registerDto.Email,
+                UserName = registerDto.UserName
+            },
+                registerDto.Password
+            );
+            if (result.Succeeded)
+            {
+                return Ok();
             }
-
-            return BadRequest();
+            else{
+                return BadRequest();
+            }
         }
 
         [HttpPost("login")]
