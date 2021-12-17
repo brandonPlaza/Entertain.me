@@ -23,20 +23,39 @@ namespace API.Model.Helpers
             var data = await _client.GetAsync($"https://api.themoviedb.org/3/search/multi?api_key={_key}&query=" +
                              UrlEncoder.Default.Encode(title));
             if (!data.IsSuccessStatusCode)
-                throw new HttpRequestException("API Failure: " + await data.Content.ReadAsStringAsync());
+                throw new HttpRequestException("API Error: " + await data.Content.ReadAsStringAsync());
 
             var result = await data.Content.ReadFromJsonAsync<MediaSearchResults>();
             
             if (result == null)
-                throw new HttpRequestException("Failed to parse API result");
+                throw new HttpRequestException("Something went wrong with the API");
 
-            await db.Media.AddRangeAsync(MediaHelper.ConvertMediaDtoToMedia(result.Results));
+            await db.Media.AddRangeAsync(MediaHelper.ConvertListOfMediaDtoToMedia(result.Results));
 
             return result!.Results;
         }
+
+        public static async Task<Media> SearchForSpecificTitle(int movieId){
+            var data = await _client.GetAsync($"https://api.themoviedb.org/3/movie/{movieId}?api_key={_key}");
+
+            if (!data.IsSuccessStatusCode)
+                throw new HttpRequestException("API Failure: " + await data.Content.ReadAsStringAsync());
+
+            var result = await data.Content.ReadFromJsonAsync<MediaDTO>();
+            
+            if (result == null)
+                throw new HttpRequestException("Something went wrong with the API");
+
+            return MediaHelper.ConvertMediaDtoToMedia(result!);
+        }
+
         private class MediaSearchResults
         {
             [JsonPropertyName("results")] public List<MediaDTO> Results { get; set; }
+        }
+
+        private class SingleResult{
+            [JsonPropertyName("results")] public List<Media> Result { get; set; }
         }
     }
 }

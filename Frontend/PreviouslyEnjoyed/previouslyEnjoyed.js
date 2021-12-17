@@ -71,5 +71,5 @@ function flipElementColor(element){
 }
 
 function sendPreferencesToAPI(){
-
+    
 }

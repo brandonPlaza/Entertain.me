@@ -1,4 +1,0 @@
-
-in AdminController:
-    - check add entry 
-    - 
