@@ -35,5 +35,12 @@ namespace API.Controllers
             var response = await SearchHelper.SearchForMedia(_context,mediaTitle);
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpPost("addToFavourites")]
+        public async Task<IActionResult> AddToUserFavourites([FromBody] List<string> mediaTitles)
+        {
+            return Ok();
+        }
     }
 }

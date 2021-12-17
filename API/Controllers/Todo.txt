@@ -1,6 +1,0 @@
-
-in AdminController:
-    - 500 error when submitting api/admin request 
-    - 500 error when submitting api/authentication/register request 
-    - check add entry 
-    - 
