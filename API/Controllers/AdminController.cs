@@ -35,7 +35,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetEntryById(int id){
 
             // var mediaId = new Guid(id);
-            var mediaItem = await _context.Media.FindAsync(id);
+            var mediaItem = await _context.Favourites.FindAsync(id);
             return Ok(mediaItem);
         }
 
@@ -47,7 +47,7 @@ namespace API.Controllers
                 return BadRequest();
 
             // add media entries 
-            await _context.Media.AddAsync(media);
+            await _context.Favourites.AddAsync(media);
             await _context.SaveChangesAsync();
             
             return Ok();
@@ -70,7 +70,7 @@ namespace API.Controllers
             // });        
 
             // find the item and replace the fields with mediaDTO's fields 
-            foreach (var item in _context.Media)
+            foreach (var item in _context.Favourites)
             {
                 if (item.Id == id)
                 {
@@ -89,9 +89,9 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteAllMedia(){
             
 
-            foreach (var item in _context.Media)
+            foreach (var item in _context.Favourites)
             {
-                _context.Media.Remove(item);
+                _context.Favourites.Remove(item);
             }
             return Ok("It has been done...");
         }
@@ -99,11 +99,11 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteEntry(int id){
 
-            foreach (var item in _context.Media)
+            foreach (var item in _context.Favourites)
             {
                 if (item.Id == id)
                 {
-                    _context.Media.Remove(item);
+                    _context.Favourites.Remove(item);
                 }
             }
             return Ok();

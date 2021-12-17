@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using API.Model.Entities;
 using API.Model.Helpers;
@@ -8,6 +9,7 @@ using API.Model.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -41,11 +43,12 @@ namespace API.Controllers
         public async Task<IActionResult> AddToUserFavourites([FromBody] List<int> mediaIds)
         {
             var newMedia = new List<Media>();
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            var userEntry = await _context.Users.Include(user => user.Favourites).SingleOrDefaultAsync(user => user.Id == authUser.Id);
             foreach(int id in mediaIds){
-                newMedia.Add(await SearchHelper.SearchForSpecificTitle(id));
+                var mediaObj = await SearchHelper.SearchForSpecificTitle(_context,id);
+                userEntry.Favourites.Add(mediaObj);
             }
-            user.Favourites.AddRange(newMedia);
             await _context.SaveChangesAsync();
             return Ok();
         }

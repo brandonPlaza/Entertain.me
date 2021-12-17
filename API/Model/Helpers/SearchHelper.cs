@@ -30,12 +30,12 @@ namespace API.Model.Helpers
             if (result == null)
                 throw new HttpRequestException("Something went wrong with the API");
 
-            await db.Media.AddRangeAsync(MediaHelper.ConvertListOfMediaDtoToMedia(result.Results));
+            await db.Favourites.AddRangeAsync(MediaHelper.ConvertListOfMediaDtoToMedia(result.Results));
 
             return result!.Results;
         }
 
-        public static async Task<Media> SearchForSpecificTitle(int movieId){
+        public static async Task<Media> SearchForSpecificTitle(DataContext db, int movieId){
             var data = await _client.GetAsync($"https://api.themoviedb.org/3/movie/{movieId}?api_key={_key}");
 
             if (!data.IsSuccessStatusCode)
@@ -46,7 +46,7 @@ namespace API.Model.Helpers
             if (result == null)
                 throw new HttpRequestException("Something went wrong with the API");
 
-            return MediaHelper.ConvertMediaDtoToMedia(result!);
+            return MediaHelper.ConvertMediaDtoToMedia(result);
         }
 
         private class MediaSearchResults

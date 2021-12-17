@@ -15,6 +15,7 @@ document.getElementById("submit").onclick =
                     var cardData = document.createElement("div")
                     cardData.classList.add("card-body")
                     cardData.innerHTML = `${results[i].title}`
+                    cardData.id = results[i].id
                     responseCard.appendChild(cardData)
                     mainDisplay.appendChild(responseCard)
                 }
@@ -50,26 +51,28 @@ function selectMedia(element){
     }
 
     if(element.srcElement.style.backgroundColor === 'green'){
-        previouslyEnjoyedMedia.splice(previouslyEnjoyedMedia.indexOf(media => media === element.srcElement.innerHTML), 1)
+        previouslyEnjoyedMedia.splice(previouslyEnjoyedMedia.indexOf(media => media === parseInt(element.srcElement.id)), 1)
         console.log(previouslyEnjoyedMedia)
         element.srcElement.style.backgroundColor = 'white'
     }
     else{
-        previouslyEnjoyedMedia.push(element.srcElement.innerHTML)
+        previouslyEnjoyedMedia.push(parseInt(element.srcElement.id))
         console.log(previouslyEnjoyedMedia)
         element.srcElement.style.backgroundColor = 'green'
     }
 }
 
-function flipElementColor(element){
-    if(element.style.backgroundColor === 'green'){
-        element.style.backgroundColor = 'white'
-    }
-    else{
-        element.style.backgroundColor = 'green'
-    }
-}
+// function flipElementColor(element){
+//     if(element.style.backgroundColor === 'green'){
+//         element.style.backgroundColor = 'white'
+//     }
+//     else{
+//         element.style.backgroundColor = 'green'
+//     }
+// }
 
 function sendPreferencesToAPI(){
-    
+    API.Post(`search/addToFavourites`, previouslyEnjoyedMedia).then(results => {
+        //clearPreviousCards()
+    });
 }

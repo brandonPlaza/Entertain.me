@@ -41,7 +41,7 @@ namespace API.Model.Helpers
             }
 
             var unique = allRecommendations.GroupBy(x => x.Id).Select(x => x.First()).ToList();
-            await db.Media.AddRangeAsync(unique);
+            await db.Favourites.AddRangeAsync(unique);
             return unique;
         }
         

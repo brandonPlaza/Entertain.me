@@ -38,7 +38,7 @@ namespace API.Controllers
         public async Task FavouriteMovie([FromQuery] int movieId)
         {
             (await _userManager.GetUserAsync(HttpContext.User)).Favourites
-                .Add(await _db.Media.FindAsync(new {Id = movieId}));
+                .Add(await _db.Favourites.FindAsync(new {Id = movieId}));
         }
     }
 }
