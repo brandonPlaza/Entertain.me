@@ -50,15 +50,17 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            // var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            var userr = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            
-            // check that the email ends in "@entertain.me"
-            if (loginDto.Email.Contains("@entertain.me"))
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
 
             if(user == null){
                 return Unauthorized("Email doesn't exist");
+            }else{
+                // check that the email ends in "@entertain.me"
+                    if (loginDto.Email.Contains("@entertain.me")){
+                    
+                }
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
