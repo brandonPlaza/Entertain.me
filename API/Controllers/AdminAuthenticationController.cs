@@ -8,6 +8,7 @@ using API.Model.Entities;
 using API.Model.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -50,25 +51,21 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            // var user = await _userManager.FindByEmailAsync(loginDto.Email);
-
-            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-
-            if(user == null){
-                return Unauthorized("Email doesn't exist");
-            }else{
-                // check that the email ends in "@entertain.me"
-                    if (loginDto.Email.Contains("@entertain.me")){
-                    
-                }
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
             }
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if(authUser == null){
+                return Unauthorized("Email doesn't exist");
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(authUser, loginDto.Password, false);
 
             if (result.Succeeded)
             {
                 return Ok(new UserDTO{
-                    Token = _tokenService.CreateToken(user)
+                    Token = _tokenService.CreateToken(authUser)
                 });
             }
 

@@ -4,6 +4,18 @@ img {
     width: auto\9; /* ie8 */
 }
 
+.h1{
+    color: #ffffff;
+}
+
+.div{
+    color: #ffffff;
+}
+
+.h2{
+    color: #ffffff;
+}
+
 .box{
     display:flex;
     align-items: center;
@@ -34,6 +46,25 @@ img {
     height: 100%;
 }
 
+.mainBackground{
+    background-image: url("../src/images/main.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.likesBackground{
+    background-image: url("../src/images/DiskStack.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.inline-block-child {
+    display: inline-block;
+  }
 
 
 html,body{

@@ -28,13 +28,25 @@ namespace API.Controllers
 
         [Authorize]
         [HttpGet]
-        public IEnumerable<User> GetAllMedia(){
-            return _context.Users;
+        public async Task<IActionResult> GetAllMedia(){
+
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
+            }
+
+
+            return Ok(_context.Users);
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEntryById(int id){
+
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
+            }
 
             // var mediaId = new Guid(id);
             var mediaItem = await _context.Media.FindAsync(id);
@@ -44,6 +56,11 @@ namespace API.Controllers
         [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddMedia(Media media){
+
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
+            }
 
             // get the user with the authenticated email
             var user = await _userManager.Users.Include(x => x.WatchList).FirstOrDefaultAsync(x => x.NormalizedEmail.Equals(User.FindFirstValue(ClaimTypes.Email).ToUpper()));
@@ -66,7 +83,12 @@ namespace API.Controllers
         [HttpPost("edit/{id}")]
         public async Task<IActionResult> EditMedia(int id,[FromBody] MediaDTO mediaDTO){
 
-            // ??? add a new item to Media table that has mediaDTO's fields ?        
+            // ??? add a new item to Media table that has mediaDTO's fields ?  
+
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
+            }      
 
             // find the item and replace the fields with mediaDTO's fields 
             foreach (var item in _context.Media)
@@ -86,6 +108,10 @@ namespace API.Controllers
         [HttpDelete("deleteAll")]
         public async Task<IActionResult> DeleteAllMedia(){
             
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
+            }
 
             foreach (var item in _context.Media)
             {
@@ -94,8 +120,13 @@ namespace API.Controllers
             return Ok("It has been done...");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEntry(int id){
+
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            if(!authUser.Email.Contains("@entertain.me")){
+            return BadRequest();
+            }
 
             foreach (var item in _context.Media)
             {
