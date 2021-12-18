@@ -22,7 +22,7 @@ namespace API.Model.Helpers
         }
 
         /// Recommend new movies based on the existing list of favourite movie IDs.
-        public async Task<List<Media>> RecommendMovies(DataContext db, List<string> favouriteIDs)
+        public async Task<List<Media>> RecommendMovies(DataContext db, List<int> favouriteIDs)
         {
             var allRecommendations = new List<Media>();
 
@@ -41,7 +41,7 @@ namespace API.Model.Helpers
             }
 
             var unique = allRecommendations.GroupBy(x => x.Id).Select(x => x.First()).ToList();
-            await db.Media.AddRangeAsync(unique);
+            await db.Favourites.AddRangeAsync(unique);
             return unique;
         }
         

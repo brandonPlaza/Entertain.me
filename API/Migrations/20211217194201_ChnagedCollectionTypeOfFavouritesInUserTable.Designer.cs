@@ -3,14 +3,16 @@ using System;
 using API.Model.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211217194201_ChnagedCollectionTypeOfFavouritesInUserTable")]
+    partial class ChnagedCollectionTypeOfFavouritesInUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,18 +45,13 @@ namespace API.Migrations
                     b.Property<string>("UserId1")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId2")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.HasIndex("UserId1");
 
-                    b.HasIndex("UserId2");
-
-                    b.ToTable("Media");
+                    b.ToTable("Favourites");
                 });
 
             modelBuilder.Entity("API.Model.Entities.User", b =>
@@ -277,12 +274,8 @@ namespace API.Migrations
                         .HasForeignKey("UserId");
 
                     b.HasOne("API.Model.Entities.User", null)
-                        .WithMany("Interested")
-                        .HasForeignKey("UserId1");
-
-                    b.HasOne("API.Model.Entities.User", null)
                         .WithMany("WatchList")
-                        .HasForeignKey("UserId2");
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("API.Model.Entities.UserGenre", b =>
@@ -350,8 +343,6 @@ namespace API.Migrations
                     b.Navigation("FavouriteGenres");
 
                     b.Navigation("Favourites");
-
-                    b.Navigation("Interested");
 
                     b.Navigation("WatchList");
                 });

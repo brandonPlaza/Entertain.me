@@ -25,8 +25,9 @@ namespace API.Controllers
             _userManager = manager;
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> RecommendMovies([FromQuery] List<string> movieIDs)
+        public async Task<IActionResult> RecommendMovies([FromQuery] List<int> movieIDs)
         {
             var results = await _movieHelper.RecommendMovies(_db, movieIDs);
             return Ok(results);
@@ -38,7 +39,7 @@ namespace API.Controllers
         public async Task FavouriteMovie([FromQuery] int movieId)
         {
             (await _userManager.GetUserAsync(HttpContext.User)).Favourites
-                .Add(await _db.Media.FindAsync(new {Id = movieId}));
+                .Add(await _db.Favourites.FindAsync(new {Id = movieId}));
         }
     }
 }
