@@ -12,7 +12,7 @@
 
     $_`#register`.addEventListener('click', () => {
         Register($_`#email`.value, $_`#username`.value, $_`#password`.value).then(e => {
-            window.location.reload();
+            window.location.replace("http://127.0.0.1:5500/Frontend/auth/login/index.html");
         });
     });
 })();
