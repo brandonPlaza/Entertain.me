@@ -92,7 +92,8 @@ namespace API.Controllers
         public async Task<IActionResult> GetUserWatchlist()
         {
             var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
-            return Ok(MediaHelper.ConvertMediaIntoWatchListDto(authUser.WatchList));
+            var userEntry = await _context.Users.Include(user => user.WatchList).SingleOrDefaultAsync(user => user.Id == authUser.Id);
+            return Ok(MediaHelper.ConvertMediaIntoWatchListDto(userEntry.WatchList));
         }
     }
 }
