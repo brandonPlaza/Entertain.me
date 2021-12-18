@@ -11,5 +11,6 @@ namespace API.Model.Entities
         public List<Media> Favourites { get; set; } 
         public ICollection<UserGenre> FavouriteGenres { get; set; }
         public ICollection<Media> WatchList { get; set; }
+        public List<Media> Interested { get; set; } 
     }
 }

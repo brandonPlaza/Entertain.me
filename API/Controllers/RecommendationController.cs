@@ -25,8 +25,9 @@ namespace API.Controllers
             _userManager = manager;
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> RecommendMovies([FromQuery] List<string> movieIDs)
+        public async Task<IActionResult> RecommendMovies([FromQuery] List<int> movieIDs)
         {
             var results = await _movieHelper.RecommendMovies(_db, movieIDs);
             return Ok(results);

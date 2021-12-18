@@ -12,6 +12,7 @@ namespace API.Model.Persistence
     {
         public DbSet<Media> Favourites { get; set; } // table of media items 
 
+        public DbSet<Media> WatchList { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=data.db");

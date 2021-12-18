@@ -45,7 +45,6 @@ namespace API.Controllers
             var newMedia = new List<Media>();
             var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             var userEntry = await _context.Users.Include(user => user.Favourites).SingleOrDefaultAsync(user => user.Id == authUser.Id);
-            
             foreach(int id in mediaIds){
                 var mediaObj = await SearchHelper.SearchForSpecificTitle(_context,id);
                 newMedia.Add(mediaObj);
@@ -54,6 +53,46 @@ namespace API.Controllers
             await _context.Favourites.AddRangeAsync(newMedia);
             await _context.SaveChangesAsync();
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("favourites")]
+        public async Task<IActionResult> GetUserFavourites()
+        {
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            var userEntry = _context.Users.Include(user => user.Favourites).SingleOrDefault(user => user.Id == authUser.Id);
+            var favourites = MediaHelper.ConvertMediaToMediaTitles(userEntry.Favourites);
+            return Ok(favourites);
+        }
+
+        [Authorize]
+        [HttpPost("addToWatchlist")]
+        public async Task<IActionResult> AddToUserWatchlist([FromBody] List<int> mediaIds)
+        {
+            var newMedia = new List<Media>();
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            var userEntry = await _context.Users.Include(user => user.WatchList).SingleOrDefaultAsync(user => user.Id == authUser.Id);
+            foreach(int id in mediaIds){
+                var mediaObj = await SearchHelper.SearchForSpecificTitle(_context,id);
+                if(_context.Favourites.FirstOrDefault(media => media.Id == id) == null){
+                    newMedia.Add(mediaObj);
+                    userEntry.WatchList.Add(mediaObj);
+                }
+                else{
+                    userEntry.WatchList.Add(mediaObj);
+                }
+            }
+            await _context.WatchList.AddRangeAsync(newMedia);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("getWatchlist")]
+        public async Task<IActionResult> GetUserWatchlist()
+        {
+            var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return Ok(MediaHelper.ConvertMediaIntoWatchListDto(authUser.WatchList));
         }
     }
 }

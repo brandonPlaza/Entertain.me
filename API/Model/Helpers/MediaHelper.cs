@@ -48,5 +48,27 @@ namespace API.Model.Helpers
                     Overview = mediaDTO.Overview
                 };
         }
+
+        public static List<int> ConvertMediaToMediaTitles(List<Media> mediaList){
+            var returnList = new List<int>();
+            foreach(Media media in mediaList){
+                returnList.Add(media.Id);
+            }
+            return returnList;
+        }
+
+        public static IEnumerable<WatchListDTO> ConvertMediaIntoWatchListDto(ICollection<Media> mediaList){
+            foreach(Media media in mediaList){
+                yield return new WatchListDTO{
+                    Id =media.Id, 
+                    Adult = media.Adult,
+                    GenreIds = media.GenreIds,
+                    MediaType = media.MediaType,
+                    Language = media.Language,
+                    Title = media.Title,
+                    Overview = media.Overview
+                };
+            }
+        }
     }
 }
