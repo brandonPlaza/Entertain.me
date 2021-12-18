@@ -78,30 +78,24 @@ namespace API.Controllers
         }
 
 
-        // edit a media item (just the media item, without the genre table)
         [Authorize]
-        [HttpPost("edit/{id}")]
-        public async Task<IActionResult> EditMedia(int id,[FromBody] MediaDTO mediaDTO){
-
-            // ??? add a new item to Media table that has mediaDTO's fields ?  
+        [HttpPut("edit/{id}")]
+        public async Task<IActionResult> EditMedia(int id,[FromBody] Media media){
 
             var authUser = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
             if(!authUser.Email.Contains("@entertain.me")){
             return BadRequest();
             }      
 
-            // find the item and replace the fields with mediaDTO's fields 
-            foreach (var item in _context.Favourites)
-            {
-                if (item.Id == id)
-                {
-                    item.Adult = mediaDTO.Adult;
-                    item.MediaType = mediaDTO.MediaType;
-                    item.Language = mediaDTO.Language;
-                    item.Title = mediaDTO.Title;
-                    item.Overview = mediaDTO.Overview;
-                }
-            }
+            var mediaobj = await _context.Favourites.SingleOrDefaultAsync(m => m.Id == id);
+
+            mediaobj.Adult = media.Adult;
+            mediaobj.MediaType = media.MediaType;
+            mediaobj.Language = media.Language;
+            mediaobj.Title = media.Title;
+            mediaobj.Overview = media.Overview;
+
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
